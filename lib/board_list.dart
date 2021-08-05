@@ -22,7 +22,7 @@ class BoardList extends StatefulWidget {
   final bool draggable;
   final Future<void>? onRefresh;
   final Future<void>? onLoading;
-  final RefreshController? refreshController;
+  final RefreshController refreshController;
   final bool enablePullDown;
   final bool enablePullUp;
 
@@ -41,7 +41,7 @@ class BoardList extends StatefulWidget {
       this.onStartDragList,
       this.onRefresh,
       this.onLoading,
-      this.refreshController,
+      required this.refreshController,
       this.enablePullDown = false,
       this.enablePullUp = false})
       : super(key: key);
@@ -143,7 +143,7 @@ class BoardListState extends State<BoardList>
             onLoading: () {
               widget.onLoading!;
             },
-            controller: widget.refreshController!,
+            controller: widget.refreshController,
             child: ListView.builder(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
