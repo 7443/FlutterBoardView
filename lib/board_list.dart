@@ -20,8 +20,8 @@ class BoardList extends StatefulWidget {
   final OnTapList? onTapList;
   final OnStartDragList? onStartDragList;
   final bool draggable;
-  final Future<void>? onRefresh;
-  final Future<void>? onLoading;
+  final Function? onRefresh;
+  final Function? onLoading;
   final RefreshController? refreshController;
   final bool enablePullDown;
   final bool enablePullUp;
