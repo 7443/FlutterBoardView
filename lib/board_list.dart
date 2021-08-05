@@ -23,8 +23,8 @@ class BoardList extends StatefulWidget {
   final Future<void>? onRefresh;
   final Future<void>? onLoading;
   final RefreshController? refreshController;
-  final bool? enablePullDown;
-  final bool? enablePullUp;
+  final bool enablePullDown;
+  final bool enablePullUp;
 
   const BoardList(
       {Key? key,
@@ -42,8 +42,8 @@ class BoardList extends StatefulWidget {
       this.onRefresh,
       this.onLoading,
       this.refreshController,
-      this.enablePullDown,
-      this.enablePullUp})
+      this.enablePullDown = false,
+      this.enablePullUp = false})
       : super(key: key);
 
   final int? index;
@@ -134,8 +134,8 @@ class BoardListState extends State<BoardList>
           child: Flexible(
         fit: FlexFit.loose,
         child: SmartRefresher(
-            enablePullDown: widget.enablePullDown!,
-            enablePullUp: widget.enablePullUp!,
+            enablePullDown: widget.enablePullDown,
+            enablePullUp: widget.enablePullUp,
             onRefresh: () {
               widget.onRefresh!;
             },
