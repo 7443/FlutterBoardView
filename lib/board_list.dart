@@ -22,7 +22,7 @@ class BoardList extends StatefulWidget {
   final bool draggable;
   final Future<void>? onRefresh;
   final Future<void>? onLoading;
-  final RefreshController refreshController = RefreshController();
+  final RefreshController? refreshController;
   final bool enablePullDown;
   final bool enablePullUp;
 
@@ -41,7 +41,7 @@ class BoardList extends StatefulWidget {
       this.onStartDragList,
       this.onRefresh,
       this.onLoading,
-      required this.refreshController,
+      this.refreshController,
       this.enablePullDown = false,
       this.enablePullUp = false})
       : super(key: key);
@@ -58,6 +58,7 @@ class BoardListState extends State<BoardList>
     with AutomaticKeepAliveClientMixin {
   List<BoardItemState> itemStates = [];
   ScrollController boardListController = new ScrollController();
+  RefreshController refreshController = RefreshController();
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
@@ -143,7 +144,9 @@ class BoardListState extends State<BoardList>
             onLoading: () {
               widget.onLoading!;
             },
-            controller: widget.refreshController,
+            controller: widget.refreshController != null
+                ? widget.refreshController!
+                : refreshController,
             child: ListView.builder(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
