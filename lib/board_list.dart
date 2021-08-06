@@ -20,8 +20,8 @@ class BoardList extends StatefulWidget {
   final OnTapList? onTapList;
   final OnStartDragList? onStartDragList;
   final bool draggable;
-  final Function? onRefresh;
-  final Function? onLoading;
+  final VoidCallback? onRefresh;
+  final VoidCallback? onLoading;
 
   const BoardList({
     Key? key,
