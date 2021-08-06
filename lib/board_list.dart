@@ -52,6 +52,7 @@ class BoardListState extends State<BoardList>
     with AutomaticKeepAliveClientMixin {
   List<BoardItemState> itemStates = [];
   ScrollController boardListController = new ScrollController();
+  RefreshController refreshController = RefreshController();
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
@@ -136,7 +137,7 @@ class BoardListState extends State<BoardList>
                     : print('At bottom');
               }
             }
-            return true;
+            return false;
           },
           child: Container(
               child: Flexible(
