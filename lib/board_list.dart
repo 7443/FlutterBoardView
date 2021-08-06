@@ -88,7 +88,7 @@ class BoardListState extends State<BoardList>
   @override
   Widget build(BuildContext context) {
     List<Widget> listWidgets = [];
-    var checkAbc = widget.onRefresh;
+
     if (widget.header != null) {
       Color? headerBackgroundColor = Color.fromARGB(255, 255, 255, 255);
       if (widget.headerBackgroundColor != null) {
@@ -132,11 +132,9 @@ class BoardListState extends State<BoardList>
             var metrics = scrollEnd.metrics;
             if (metrics.atEdge) {
               if (metrics.pixels == 0) {
-                checkAbc != null ? widget.onRefresh! : print('At top');
+                widget.onRefresh!();
               } else {
-                widget.onLoading != null
-                    ? widget.onLoading!
-                    : print('At bottom');
+                widget.onLoading!();
               }
             }
             return true;
