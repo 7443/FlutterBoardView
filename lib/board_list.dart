@@ -137,7 +137,7 @@ class BoardListState extends State<BoardList>
                 widget.onLoading?.call();
               }
             }
-            return false;
+            return true;
           },
           child: Container(
               child: Flexible(
