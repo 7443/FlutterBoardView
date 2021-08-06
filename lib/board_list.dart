@@ -136,9 +136,9 @@ class BoardListState extends State<BoardList>
             var metrics = scrollEnd.metrics;
             if (metrics.atEdge) {
               if (metrics.pixels == 0)
-                print('At top');
+                widget.onRefresh!();
               else
-                print('At bottom');
+                widget.onLoading!();
             }
             return true;
           },
