@@ -133,12 +133,11 @@ class BoardListState extends State<BoardList>
             if (metrics.atEdge) {
               if (metrics.pixels == 0) {
                 widget.onRefresh?.call();
-                print('Manh');
               } else {
                 widget.onLoading?.call();
               }
             }
-            return true;
+            return false;
           },
           child: Container(
               child: Flexible(
