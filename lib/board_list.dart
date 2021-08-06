@@ -127,17 +127,17 @@ class BoardListState extends State<BoardList>
     if (widget.items != null) {
       listWidgets.add(NotificationListener<ScrollEndNotification>(
           onNotification: (scrollEnd) {
+            widget.onRefresh != null ? widget.onRefresh! : print('At top');
             var metrics = scrollEnd.metrics;
             if (metrics.atEdge) {
               if (metrics.pixels == 0) {
-                widget.onRefresh != null ? widget.onRefresh! : print('At top');
               } else {
                 widget.onLoading != null
                     ? widget.onLoading!
                     : print('At bottom');
               }
             }
-            return false;
+            return true;
           },
           child: Container(
               child: Flexible(
