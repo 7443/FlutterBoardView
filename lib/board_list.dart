@@ -25,6 +25,7 @@ class BoardList extends StatefulWidget {
   final RefreshController? refreshController;
   final bool enablePullDown;
   final bool enablePullUp;
+  final bool Function(ScrollEndNotification)? onNotification;
 
   const BoardList(
       {Key? key,
@@ -43,6 +44,7 @@ class BoardList extends StatefulWidget {
       this.onLoading,
       this.refreshController,
       this.enablePullDown = false,
+      this.onNotification,
       this.enablePullUp = false})
       : super(key: key);
 
@@ -132,19 +134,7 @@ class BoardListState extends State<BoardList>
     }
     if (widget.items != null) {
       listWidgets.add(NotificationListener<ScrollEndNotification>(
-          onNotification: (scrollEnd) {
-            var metrics = scrollEnd.metrics;
-            if (metrics.atEdge) {
-              if (metrics.pixels == 0) {
-                widget.onRefresh != null ? widget.onRefresh! : print('At top');
-              } else {
-                widget.onLoading != null
-                    ? widget.onLoading!
-                    : print('At bottom');
-              }
-            }
-            return true;
-          },
+          onNotification: widget.onNotification,
           child: Container(
               child: Flexible(
             fit: FlexFit.loose,
