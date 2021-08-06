@@ -132,49 +132,53 @@ class BoardListState extends State<BoardList>
     }
     if (widget.items != null) {
       listWidgets.add(NotificationListener<ScrollEndNotification>(
-        onNotification: (scrollEnd) {
-          var metrics = scrollEnd.metrics;
-          if (metrics.atEdge) {
-            if (metrics.pixels == 0)
-              print('At top');
-            else
-              print('At bottom');
-          }
-          return true;
-        },
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          controller: boardListController,
-          itemCount: widget.items!.length,
-          itemBuilder: (ctx, index) {
-            if (widget.items![index].boardList == null ||
-                widget.items![index].index != index ||
-                widget.items![index].boardList!.widget.index != widget.index ||
-                widget.items![index].boardList != this) {
-              widget.items![index] = new BoardItem(
-                boardList: this,
-                item: widget.items![index].item,
-                draggable: widget.items![index].draggable,
-                index: index,
-                onDropItem: widget.items![index].onDropItem,
-                onTapItem: widget.items![index].onTapItem,
-                onDragItem: widget.items![index].onDragItem,
-                onStartDragItem: widget.items![index].onStartDragItem,
-              );
+          onNotification: (scrollEnd) {
+            var metrics = scrollEnd.metrics;
+            if (metrics.atEdge) {
+              if (metrics.pixels == 0)
+                print('At top');
+              else
+                print('At bottom');
             }
-            if (widget.boardView!.draggedItemIndex == index &&
-                widget.boardView!.draggedListIndex == widget.index) {
-              return Opacity(
-                opacity: 0.0,
-                child: widget.items![index],
-              );
-            } else {
-              return widget.items![index];
-            }
+            return true;
           },
-        ),
-      ));
+          child: Container(
+              child: Flexible(
+            fit: FlexFit.loose,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              controller: boardListController,
+              itemCount: widget.items!.length,
+              itemBuilder: (ctx, index) {
+                if (widget.items![index].boardList == null ||
+                    widget.items![index].index != index ||
+                    widget.items![index].boardList!.widget.index !=
+                        widget.index ||
+                    widget.items![index].boardList != this) {
+                  widget.items![index] = new BoardItem(
+                    boardList: this,
+                    item: widget.items![index].item,
+                    draggable: widget.items![index].draggable,
+                    index: index,
+                    onDropItem: widget.items![index].onDropItem,
+                    onTapItem: widget.items![index].onTapItem,
+                    onDragItem: widget.items![index].onDragItem,
+                    onStartDragItem: widget.items![index].onStartDragItem,
+                  );
+                }
+                if (widget.boardView!.draggedItemIndex == index &&
+                    widget.boardView!.draggedListIndex == widget.index) {
+                  return Opacity(
+                    opacity: 0.0,
+                    child: widget.items![index],
+                  );
+                } else {
+                  return widget.items![index];
+                }
+              },
+            ),
+          ))));
     }
 
     if (widget.footer != null) {
