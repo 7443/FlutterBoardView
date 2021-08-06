@@ -1,7 +1,5 @@
 library boardview;
 
-import 'dart:math';
-
 import 'package:boardview/boardview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
