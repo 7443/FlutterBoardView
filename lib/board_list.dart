@@ -22,31 +22,23 @@ class BoardList extends StatefulWidget {
   final bool draggable;
   final Function? onRefresh;
   final Function? onLoading;
-  final RefreshController? refreshController;
-  final bool enablePullDown;
-  final bool enablePullUp;
-  final bool Function(ScrollEndNotification)? onNotification;
 
-  const BoardList(
-      {Key? key,
-      this.header,
-      this.items,
-      this.footer,
-      this.backgroundColor,
-      this.headerBackgroundColor,
-      this.boardView,
-      this.draggable = true,
-      this.index,
-      this.onDropList,
-      this.onTapList,
-      this.onStartDragList,
-      this.onRefresh,
-      this.onLoading,
-      this.refreshController,
-      this.enablePullDown = false,
-      this.onNotification,
-      this.enablePullUp = false})
-      : super(key: key);
+  const BoardList({
+    Key? key,
+    this.header,
+    this.items,
+    this.footer,
+    this.backgroundColor,
+    this.headerBackgroundColor,
+    this.boardView,
+    this.draggable = true,
+    this.index,
+    this.onDropList,
+    this.onTapList,
+    this.onStartDragList,
+    this.onRefresh,
+    this.onLoading,
+  }) : super(key: key);
 
   final int? index;
 
@@ -60,7 +52,6 @@ class BoardListState extends State<BoardList>
     with AutomaticKeepAliveClientMixin {
   List<BoardItemState> itemStates = [];
   ScrollController boardListController = new ScrollController();
-  RefreshController refreshController = RefreshController();
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
@@ -134,7 +125,19 @@ class BoardListState extends State<BoardList>
     }
     if (widget.items != null) {
       listWidgets.add(NotificationListener<ScrollEndNotification>(
-          onNotification: widget.onNotification,
+          onNotification: (scrollEnd) {
+            var metrics = scrollEnd.metrics;
+            if (metrics.atEdge) {
+              if (metrics.pixels == 0) {
+                widget.onRefresh != null ? widget.onRefresh! : print('At top');
+              } else {
+                widget.onLoading != null
+                    ? widget.onLoading!
+                    : print('At bottom');
+              }
+            }
+            return true;
+          },
           child: Container(
               child: Flexible(
             fit: FlexFit.loose,
