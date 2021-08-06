@@ -20,8 +20,8 @@ class BoardList extends StatefulWidget {
   final OnTapList? onTapList;
   final OnStartDragList? onStartDragList;
   final bool draggable;
-  final VoidCallback? onRefresh;
-  final VoidCallback? onLoading;
+  final Function? onRefresh;
+  final Function? onLoading;
   final RefreshController? refreshController;
   final bool enablePullDown;
   final bool enablePullUp;
@@ -136,13 +136,11 @@ class BoardListState extends State<BoardList>
             var metrics = scrollEnd.metrics;
             if (metrics.atEdge) {
               if (metrics.pixels == 0) {
-                if (widget.onRefresh != null) {
-                  widget.onRefresh!();
-                }
+                widget.onRefresh != null ? widget.onRefresh! : print('At top');
               } else {
-                if (widget.onLoading != null) {
-                  widget.onLoading!();
-                }
+                widget.onLoading != null
+                    ? widget.onLoading!
+                    : print('At bottom');
               }
             }
             return true;
