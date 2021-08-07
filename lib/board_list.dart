@@ -133,8 +133,10 @@ class BoardListState extends State<BoardList>
             if (metrics.atEdge) {
               if (metrics.pixels == metrics.minScrollExtent) {
                 widget.onRefresh?.call();
+                print("On top!");
               } else if (metrics.pixels == metrics.maxScrollExtent) {
                 widget.onLoading?.call();
+                print("On bottom!");
               }
             }
             return true;
