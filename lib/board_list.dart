@@ -38,9 +38,13 @@ class BoardList extends StatefulWidget {
     this.onStartDragList,
     this.onRefresh,
     this.onLoading,
+    this.onTop = false,
+    this.onBottom = false,
   }) : super(key: key);
 
   final int? index;
+  bool onTop;
+  bool onBottom;
 
   @override
   State<StatefulWidget> createState() {
@@ -126,15 +130,23 @@ class BoardListState extends State<BoardList>
           )));
     }
 
+    if (widget.onTop) {
+      widget.onRefresh?.call();
+    } else if (widget.onBottom) {
+      widget.onLoading?.call();
+    }
+
     if (widget.items != null) {
       listWidgets.add(NotificationListener<ScrollEndNotification>(
           onNotification: (scrollEnd) {
             var metrics = scrollEnd.metrics;
+            widget.onTop = false;
+            widget.onTop = false;
             if (metrics.atEdge) {
               if (metrics.pixels == 0) {
-                widget.onRefresh?.call();
+                widget.onTop = true;
               } else {
-                widget.onLoading?.call();
+                widget.onBottom = true;
               }
             }
             return true;
