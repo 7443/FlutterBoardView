@@ -62,9 +62,9 @@ class BoardListState extends State<BoardList>
     boardListController.addListener(() {
       if (boardListController.position.atEdge) {
         if (boardListController.position.pixels == 0) {
-          return widget.onRefresh?.call();
+          widget.onRefresh?.call();
         } else {
-          return widget.onLoading?.call();
+          widget.onLoading?.call();
         }
       }
     });
