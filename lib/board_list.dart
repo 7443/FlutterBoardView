@@ -54,6 +54,24 @@ class BoardListState extends State<BoardList>
   ScrollController boardListController = new ScrollController();
   RefreshController refreshController = RefreshController();
 
+  @override
+  void initState() {
+    super.initState();
+
+    // Setup the listener.
+    boardListController.addListener(() {
+      if (boardListController.position.atEdge) {
+        if (boardListController.position.pixels == 0) {
+          widget.onRefresh?.call();
+          print("On top!");
+        } else {
+          widget.onLoading?.call();
+          print("On bottom!");
+        }
+      }
+    });
+  }
+
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
       widget.onDropList!(listIndex, widget.boardView!.startListIndex);
@@ -127,57 +145,42 @@ class BoardListState extends State<BoardList>
     }
 
     if (widget.items != null) {
-      listWidgets.add(NotificationListener<ScrollEndNotification>(
-          onNotification: (scrollEnd) {
-            var metrics = scrollEnd.metrics;
-            if (metrics.atEdge) {
-              if (metrics.pixels == metrics.minScrollExtent) {
-                widget.onRefresh?.call();
-                print("On top!");
-              } else if (metrics.pixels == metrics.maxScrollExtent) {
-                widget.onLoading?.call();
-                print("On bottom!");
-              }
+      listWidgets.add(Container(
+          child: Flexible(
+        fit: FlexFit.loose,
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          controller: boardListController,
+          itemCount: widget.items!.length,
+          itemBuilder: (ctx, index) {
+            if (widget.items![index].boardList == null ||
+                widget.items![index].index != index ||
+                widget.items![index].boardList!.widget.index != widget.index ||
+                widget.items![index].boardList != this) {
+              widget.items![index] = new BoardItem(
+                boardList: this,
+                item: widget.items![index].item,
+                draggable: widget.items![index].draggable,
+                index: index,
+                onDropItem: widget.items![index].onDropItem,
+                onTapItem: widget.items![index].onTapItem,
+                onDragItem: widget.items![index].onDragItem,
+                onStartDragItem: widget.items![index].onStartDragItem,
+              );
             }
-            return true;
+            if (widget.boardView!.draggedItemIndex == index &&
+                widget.boardView!.draggedListIndex == widget.index) {
+              return Opacity(
+                opacity: 0.0,
+                child: widget.items![index],
+              );
+            } else {
+              return widget.items![index];
+            }
           },
-          child: Container(
-              child: Flexible(
-            fit: FlexFit.loose,
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              controller: boardListController,
-              itemCount: widget.items!.length,
-              itemBuilder: (ctx, index) {
-                if (widget.items![index].boardList == null ||
-                    widget.items![index].index != index ||
-                    widget.items![index].boardList!.widget.index !=
-                        widget.index ||
-                    widget.items![index].boardList != this) {
-                  widget.items![index] = new BoardItem(
-                    boardList: this,
-                    item: widget.items![index].item,
-                    draggable: widget.items![index].draggable,
-                    index: index,
-                    onDropItem: widget.items![index].onDropItem,
-                    onTapItem: widget.items![index].onTapItem,
-                    onDragItem: widget.items![index].onDragItem,
-                    onStartDragItem: widget.items![index].onStartDragItem,
-                  );
-                }
-                if (widget.boardView!.draggedItemIndex == index &&
-                    widget.boardView!.draggedListIndex == widget.index) {
-                  return Opacity(
-                    opacity: 0.0,
-                    child: widget.items![index],
-                  );
-                } else {
-                  return widget.items![index];
-                }
-              },
-            ),
-          ))));
+        ),
+      )));
     }
 
     if (widget.footer != null) {
