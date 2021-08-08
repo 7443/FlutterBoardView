@@ -41,6 +41,7 @@ class BoardList extends StatefulWidget {
     this.onRefresh,
     this.onLoading,
     this.hasMore,
+    this.refreshController,
   }) : super(key: key);
 
   final int? index;
