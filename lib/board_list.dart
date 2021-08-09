@@ -126,15 +126,20 @@ class BoardListState extends State<BoardList>
           )));
     }
 
+    void testPrint(){
+      print('Test')
+    }
+
     if (widget.items != null) {
       listWidgets.add(NotificationListener<ScrollEndNotification>(
           onNotification: (scrollEnd) {
             var metrics = scrollEnd.metrics;
             if (metrics.atEdge) {
               if (metrics.pixels == metrics.minScrollExtent) {
-                return widget.onRefresh?.call();
+                testPrint();
+                widget.onRefresh?.call();
               } else if (metrics.pixels == metrics.maxScrollExtent) {
-                return widget.onLoading?.call();
+                widget.onLoading?.call();
               }
             }
             return true;
