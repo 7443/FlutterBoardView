@@ -133,7 +133,7 @@ class BoardListState extends State<BoardList>
 
     void onLoading() {
       if (widget.onLoading != null) {
-        widget.onLoading!();
+        widget.onLoading!;
         print('on bottom!');
       }
     }
