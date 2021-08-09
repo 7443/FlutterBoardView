@@ -126,8 +126,8 @@ class BoardListState extends State<BoardList>
           )));
     }
 
-    void testPrint(){
-      print('Test')
+    void testPrint() {
+      print('Test');
     }
 
     if (widget.items != null) {
