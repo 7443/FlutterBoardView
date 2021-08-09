@@ -126,8 +126,14 @@ class BoardListState extends State<BoardList>
           )));
     }
 
-    void testPrint() {
-      print('Test');
+    void onRefresh() {
+      widget.onRefresh?.call();
+      print('on top');
+    }
+
+    void onLoading() {
+      widget.onRefresh?.call();
+      print('on bottom!');
     }
 
     if (widget.items != null) {
@@ -136,10 +142,9 @@ class BoardListState extends State<BoardList>
             var metrics = scrollEnd.metrics;
             if (metrics.atEdge) {
               if (metrics.pixels == metrics.minScrollExtent) {
-                testPrint();
-                widget.onRefresh?.call();
+                onRefresh();
               } else if (metrics.pixels == metrics.maxScrollExtent) {
-                widget.onLoading?.call();
+                onLoading();
               }
             }
             return true;
